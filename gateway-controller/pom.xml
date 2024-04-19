@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
+    <artifactId>cqrs-es-gateway</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>cqrs-es-gateway</name>
+    <description>Bank Account Gateway</description>
+
+    <parent>
+        <groupId>com.targa.labs.dev</groupId>
+        <artifactId>cqrs-es</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <start-class>com.targa.labs.dev.gateway.rest.CqrsEsApplication</start-class>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.targa.labs.dev</groupId> <!-- ServiceB's groupId -->
+            <artifactId>cqrs-es-bank-account</artifactId> <!-- ServiceB's artifactId -->
+            <version>0.0.1-SNAPSHOT</version> <!-- ServiceB's version -->
+        </dependency>
+        <dependency>
+            <groupId>com.targa.labs.dev</groupId> <!-- ServiceB's groupId -->
+            <artifactId>cqrs-es-bank-debit</artifactId> <!-- ServiceB's artifactId -->
+            <version>0.0.1-SNAPSHOT</version> <!-- ServiceB's version -->
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>${start-class}</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
