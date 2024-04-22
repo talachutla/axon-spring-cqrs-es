@@ -40,7 +40,7 @@ class ControllerTests {
     @Test
     void testCreateAccount() throws Exception {
         AccountCreationDTO accountRequest = new AccountCreationDTO(BigDecimal.valueOf(100), "SampleUser");
-        BankAccount account = new BankAccount(UUID.randomUUID(), "SampleUser", BigDecimal.valueOf(100));
+        BankAccount account = new BankAccount();
         CompletableFuture<BankAccount> future = CompletableFuture.completedFuture(account);
 
         when(accountCommandService.createAccount(any(AccountCreationDTO.class))).thenReturn(future);
