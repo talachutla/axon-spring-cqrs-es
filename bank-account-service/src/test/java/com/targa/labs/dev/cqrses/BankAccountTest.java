@@ -7,6 +7,7 @@ import com.targa.labs.dev.cqrses.command.DebitMoneyCommand;
 import com.targa.labs.dev.cqrses.event.AccountCreatedEvent;
 import com.targa.labs.dev.cqrses.event.MoneyCreditedEvent;
 import com.targa.labs.dev.cqrses.event.MoneyDebitedEvent;
+import com.targa.labs.dev.cqrses.query.FindBankAccountQuery;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,6 +71,17 @@ public class BankAccountTest {
                 .expectEvents(new MoneyDebitedEvent(
                         id,
                         BigDecimal.valueOf(100)));
+    }
+
+    @Test
+    public void should_return_findAccount_query_when_createAccount_command() {
+        fixture.given(new AccountCreatedEvent(
+                        id,
+                        BigDecimal.valueOf(1000),
+                        customerName))
+                .when(new FindBankAccountQuery(
+                        id))
+                .expectSuccessfulHandlerExecution();
     }
 
     @Test
