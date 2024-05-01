@@ -1,9 +1,12 @@
 package com.targa.labs.dev.cqrses;
 
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.extensions.kafka.KafkaProperties;
 import org.axonframework.extensions.kafka.eventhandling.KafkaMessageConverter;
 import org.axonframework.extensions.kafka.eventhandling.producer.*;
 import org.axonframework.extensions.kafka.eventhandling.producer.KafkaPublisher;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
@@ -16,11 +19,17 @@ public class KafkaEventPublicationConfiguration {
                                                            int producerCacheSize,
                                                            Map<String, Object> producerConfiguration,
                                                            ConfirmationMode confirmationMode,
-                                                           String transactionIdPrefix) {
+                                                           String transactionIdPrefix,
+                                                           KafkaProperties kafkaProperties) {
+        Map<String, Object> producerProps = kafkaProperties.buildProducerProperties();
+        // Enable idempotence
+        producerProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+        producerProps.putAll(producerConfiguration);
+
         return DefaultProducerFactory.<String, byte[]>builder()
                 .closeTimeout(closeTimeout)                 // Defaults to "30" seconds
                 .producerCacheSize(producerCacheSize)       // Defaults to "10"; only used for "TRANSACTIONAL" mode
-                .configuration(producerConfiguration)       // Hard requirement
+                .configuration(producerProps)       // Hard requirement
                 .confirmationMode(confirmationMode)         // Defaults to a Confirmation Mode of "NONE"
                 .transactionalIdPrefix(transactionIdPrefix) // Hard requirement when in "TRANSACTIONAL" mode
                 .build();

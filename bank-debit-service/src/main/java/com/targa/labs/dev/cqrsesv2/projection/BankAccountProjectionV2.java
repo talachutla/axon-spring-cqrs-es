@@ -41,7 +41,7 @@ public class BankAccountProjectionV2 {
 
     @EventHandler
     public void on(MoneyCreditedEventV2 event) throws AccountNotFoundExceptionV2 {
-        log.debug("Handling a Bank Account Credit command {}", event.getId());
+        log.info("Handling a V2 Bank Account Credit command {}", event.getId());
         Optional<BankAccountV2> optionalBankAccount = this.repository.findById(event.getId());
         if (optionalBankAccount.isPresent()) {
             BankAccountV2 bankAccount = optionalBankAccount.get();
